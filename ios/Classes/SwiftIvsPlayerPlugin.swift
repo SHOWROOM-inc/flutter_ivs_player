@@ -15,10 +15,36 @@ public class SwiftIvsPlayerPlugin: NSObject, FlutterPlugin {
 
 
     private let playerView = IVSPlayerView()
+    var player: IVSPlayer?
 
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
+    if call.method == "stop" {
+        player?.pause()
+    }
+    if call.method == "clear" {
+        player?.pause()
+        player = IVSPlayer()
+    }
+    if call.method == "play" {
+        if let args =  call.arguments  as? [String:Any?] {
+            if let existingPlayer = self.player {
+                player = existingPlayer
+            } else {
+                player = IVSPlayer()
+            }
+            
+            let urlString = args["url"] as? String ?? "no url"
+            let url = URL(string: urlString)!;
+            player?.load(url)
+            player?.play()
+            
+            let isHidden = args["isHidden"] as? Bool ?? false;
+            if (isHidden) {
+                playerView.isHidden = true;
+            }
+         }
+    }
   }
 
 }
@@ -26,22 +52,14 @@ public class SwiftIvsPlayerPlugin: NSObject, FlutterPlugin {
 
 extension SwiftIvsPlayerPlugin: FlutterPlatformViewFactory {
   public func create(withFrame frame: CGRect, viewIdentifier viewId: Int64, arguments args: Any?) -> FlutterPlatformView {
-
-     let player = IVSPlayer()
+    
+    if let existingPlayer = self.player {
+        player = existingPlayer
+    } else {
+        player = IVSPlayer()
+    }
+    
      playerView.player = player
-    if let args = args as? [String:Any?] {
-        let urlString = args["url"] as? String ?? "no url"
-        let url = URL(string: urlString)!;
-        player.load(url)
-        player.play()
-        
-        let isHidden = args["isHidden"] as? Bool ?? false;
-        if (isHidden) {
-            playerView.isHidden = true;
-        }
-        
-     }
-     
      return SwiftIvsyPlatformView(playerView)
   }
     public func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {

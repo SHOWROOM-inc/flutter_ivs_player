@@ -5,28 +5,34 @@ import 'package:flutter/services.dart';
 
 class IvsPlayer {
   static const MethodChannel _channel = const MethodChannel('ivs_player');
+  UiKitView player;
 
-/*  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }*/
+  Future<void> stop() async {
+    await _channel.invokeMethod('stop');
+  }
 
-  static UiKitView player({String url, bool isHidden = false}) {
-    UiKitView res;
+  Future<void> clear() async {
+    await _channel.invokeMethod('clear');
+  }
+
+  Future<void> play({String url, bool isHidden = false}) async {
+    final Map params = <String, dynamic>{
+      'url': url,
+      'isHidden': isHidden,
+    };
+    await _channel.invokeMethod('play', params);
+  }
+
+  init() {
     try {
-      res = UiKitView(
+      player = UiKitView(
           viewType: 'ivs_player/player_View',
-          creationParams: <String, dynamic>{
-            'url': url,
-            'isHidden': isHidden,
-          },
-          creationParamsCodec: StandardMessageCodec(),
           onPlatformViewCreated: (id) {
             print('UiKitView created: id = $id');
           });
     } catch (e) {
       print(e);
     }
-    return res;
+    return player;
   }
 }
