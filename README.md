@@ -13,3 +13,26 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+
+## How to Use
+
+```
+var ivsPlayer = new IvsPlayer();
+ivsPlayer.init();
+
+// child: ivsPlayer.playerにUiKitViewが格納されてるので下記のように利用
+// TODO:これのインターフェイスは変更するかも(Containerでラッピングするかも
+Container(
+	child:child: ivsPlayer.player,
+)
+
+// isHiddenをtrueにするとビデオ表示せず音声飲のみ(ラジオ配信などで利用
+ivsPlayer.play({url:"hlsのurl", isHidden:true;))
+
+// 停止
+ivsPlayer.stop();
+
+// 設定したurl含めすべてクリア disposeのタイミングでかならず呼ぶ。
+ivsPlayer.clear();
+
+```
