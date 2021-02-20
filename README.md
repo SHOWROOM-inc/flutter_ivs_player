@@ -24,6 +24,8 @@ ivsPlayer.init();
 // TODO:これのインターフェイスは変更するかも(Containerでラッピングするかも
 Container(
 	child:child: ivsPlayer.player,
+    width: 640,
+    height: 360,
 )
 
 // isHiddenをtrueにするとビデオ表示せず音声飲のみ(ラジオ配信などで利用
