@@ -14,6 +14,18 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 
+## How to Install
+
+pubspec.yamlにgithubのパスを記載してinstall
+
+```
+  ivs_player:
+    git:
+      url: git@github.com:SHOWROOM-inc/flutter_ivs_player.git
+      ref: main
+```
+
+
 ## How to Use
 
 ```
